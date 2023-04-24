@@ -1,8 +1,10 @@
 import { useRef, useState } from "react";
 import classes from "./newComment.module.css";
 
+import { CommentType } from "./Comments";
+
 interface NewCommentProps {
-  onAddComment: ({}) => void;
+  onAddComment: (commentData: CommentType) => void;
 }
 
 function NewComment({ onAddComment }: NewCommentProps) {
@@ -40,7 +42,7 @@ function NewComment({ onAddComment }: NewCommentProps) {
   }
 
   return (
-    <form className={classes.form}>
+    <form className={classes.form} onSubmit={sendCommentHandler}>
       <div className={classes.row}>
         <div className={classes.control}>
           <label htmlFor="email">Your email</label>

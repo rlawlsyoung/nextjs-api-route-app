@@ -4,6 +4,12 @@ import CommentList from "./CommentList";
 import NewComment from "./NewComment";
 import classes from "./comments.module.css";
 
+export interface CommentType {
+  email: string;
+  name: string;
+  text: string;
+}
+
 interface CommentsProps {
   eventId: string;
 }
@@ -15,8 +21,16 @@ function Comments({ eventId }: CommentsProps) {
     setShowComments((prevStatus) => !prevStatus);
   }
 
-  function addCommentHandler(commentData: any) {
-    // send data to API
+  function addCommentHandler(commentData: CommentType) {
+    fetch(`/api/comments/${eventId}`, {
+      method: "POST",
+      body: JSON.stringify(commentData),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => console.log(data));
   }
 
   return (
