@@ -1,7 +1,8 @@
 import Head from "next/head";
 
-import { getFeaturedEvents } from "@/helpers/api-util";
 import EventList from "@/components/events/EventList";
+import NewsletterRegistration from "@/components/input/NewsletterRegistration";
+import { getFeaturedEvents } from "@/helpers/api-util";
 import { GetStaticProps } from "next";
 import { EventType } from "@/helpers/api-util";
 
@@ -19,6 +20,7 @@ const HomePage: React.FC<HomePageProps> = ({ events }) => {
           content="Find a lot of punk rock show in Korea"
         />
       </Head>
+      <NewsletterRegistration />
       <EventList items={events} />
     </div>
   );

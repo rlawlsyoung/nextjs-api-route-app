@@ -3,6 +3,7 @@ import Head from "next/head";
 import EventSummary from "@/components/eventDetail/EventSummary";
 import EventLogistics from "@/components/eventDetail/EventLogistics";
 import EventContent from "@/components/eventDetail/EventContent";
+import Comments from "@/components/input/Comments";
 
 import {
   getEventById,
@@ -33,6 +34,7 @@ const EventsDetailPage: React.FC<EventsDetailPageProps> = ({ event }) => {
       <EventContent>
         <p>{event.description}</p>
       </EventContent>
+      <Comments eventId={event.id} />
     </>
   ) : (
     <div className="center">Loading...</div>
