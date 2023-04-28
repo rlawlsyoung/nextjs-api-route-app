@@ -14,8 +14,8 @@ function NewComment({ onAddComment }: NewCommentProps) {
   const nameInputRef = useRef<HTMLInputElement>(null);
   const commentInputRef = useRef<HTMLTextAreaElement>(null);
 
-  function sendCommentHandler(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
+  function sendCommentHandler(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
 
     const enteredEmail = emailInputRef.current?.value;
     const enteredName = nameInputRef.current?.value;
