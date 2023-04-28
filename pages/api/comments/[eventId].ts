@@ -9,11 +9,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   );
 
   if (req.method === "GET") {
+    const db = client.db("events");
+
+    const documents = await db
+      .collection("comments")
+      .find()
+      .sort({ _id: -1 })
+      .toArray();
+
     res.status(200).json({
-      data: [
-        { id: "c1", email: "1@test.com", name: "kim", text: "hi" },
-        { id: "c2", email: "2@test.com", name: "park", text: "bye" },
-      ],
+      comments: documents,
     });
   } else if (req.method === "POST") {
     const { email, name, text } = req.body;

@@ -5,7 +5,7 @@ import NewComment from "./NewComment";
 import classes from "./comments.module.css";
 
 export interface CommentType {
-  id?: string;
+  _id?: string;
   email: string;
   name: string;
   text: string;
@@ -28,7 +28,7 @@ function Comments({ eventId }: CommentsProps) {
         },
       })
         .then((res) => res.json())
-        .then((data) => setComments(data.data));
+        .then((data) => setComments(data.comments));
     }
   }, [showComments]);
 
