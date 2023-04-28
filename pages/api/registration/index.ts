@@ -14,9 +14,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       "mongodb+srv://rlawlsyoung:1q2w3e4r@udemycluster.o9wuh6s.mongodb.net/?retryWrites=true&w=majority"
     );
 
-    const db = client.db("newsletter");
+    const db = client.db("events");
 
-    await db.collection("emails").insertOne({ email: email });
+    await db.collection("newsletter").insertOne({ email: email });
 
     client.close();
 

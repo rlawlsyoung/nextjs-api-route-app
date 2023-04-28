@@ -1,7 +1,12 @@
 import { NextApiRequest, NextApiResponse } from "next";
+import { MongoClient } from "mongodb";
 
-const handler = (req: NextApiRequest, res: NextApiResponse) => {
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const eventId = req.query.eventId;
+
+  const client = await MongoClient.connect(
+    "mongodb+srv://rlawlsyoung:1q2w3e4r@udemycluster.o9wuh6s.mongodb.net/?retryWrites=true&w=majority"
+  );
 
   if (req.method === "GET") {
     res.status(200).json({
@@ -21,10 +26,26 @@ const handler = (req: NextApiRequest, res: NextApiResponse) => {
       res.status(422).json({ message: "Invalid Input" });
       return;
     }
+
+    const newComment = {
+      email,
+      name,
+      text,
+      eventId,
+    };
+
+    const db = client.db("events");
+
+    const result = await db.collection("comments").insertOne(newComment);
+
+    console.log(result.insertedId);
+
     res.status(201).json({
-      data: { email: email, name: name, text: text },
+      data: newComment,
     });
   }
+
+  client.close();
 };
 
 export default handler;
