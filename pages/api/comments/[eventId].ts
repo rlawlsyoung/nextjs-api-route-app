@@ -1,25 +1,37 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { MongoClient } from "mongodb";
+
+import {
+  connectDatabase,
+  insertDocument,
+  getAllDocuments,
+} from "@/helpers/db-util";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const eventId = req.query.eventId;
 
-  const client = await MongoClient.connect(
-    "mongodb+srv://rlawlsyoung:1q2w3e4r@udemycluster.o9wuh6s.mongodb.net/?retryWrites=true&w=majority"
-  );
+  let client;
+
+  try {
+    client = await connectDatabase();
+  } catch (err) {
+    res.status(500).json({ message: "Connecting to the database failed." });
+    return;
+  }
 
   if (req.method === "GET") {
-    const db = client.db("events");
-
-    const documents = await db
-      .collection("comments")
-      .find()
-      .sort({ _id: -1 })
-      .toArray();
-
-    res.status(200).json({
-      comments: documents.filter((data: any) => data.eventId === eventId),
-    });
+    try {
+      const documents = await getAllDocuments(
+        client,
+        "comments",
+        { _id: -1 },
+        { eventId: eventId }
+      );
+      res.status(200).json({
+        comments: documents,
+      });
+    } catch (err) {
+      res.status(500).json({ message: "Getting comment failed." });
+    }
   } else if (req.method === "POST") {
     const { email, name, text } = req.body;
     if (
@@ -29,25 +41,35 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       text.trim() === ""
     ) {
       res.status(422).json({ message: "Invalid Input" });
-      return;
+      client.close();
     }
 
-    const newComment = {
+    interface NewCommentType {
+      _id?: Object;
+      email: string;
+      name: string;
+      text: string;
+      eventId: string | string[] | undefined;
+    }
+
+    const newComment: NewCommentType = {
       email,
       name,
       text,
       eventId,
     };
 
-    const db = client.db("events");
+    let result;
 
-    const result = await db.collection("comments").insertOne(newComment);
-
-    console.log(result.insertedId);
-
-    res.status(201).json({
-      data: newComment,
-    });
+    try {
+      result = await insertDocument(client, "comments", newComment);
+      newComment._id = result.insertedId;
+      res.status(201).json({
+        data: newComment,
+      });
+    } catch (err) {
+      res.status(500).json({ message: "Inserting comment failed." });
+    }
   }
 
   client.close();
