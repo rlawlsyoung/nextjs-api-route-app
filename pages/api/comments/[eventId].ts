@@ -18,7 +18,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       .toArray();
 
     res.status(200).json({
-      comments: documents,
+      comments: documents.filter((data: any) => data.eventId === eventId),
     });
   } else if (req.method === "POST") {
     const { email, name, text } = req.body;

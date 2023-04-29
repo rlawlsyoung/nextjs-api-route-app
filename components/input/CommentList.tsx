@@ -17,7 +17,6 @@ function CommentList({ items }: CommentListProps) {
           </div>
         </li>
       ))}
-      )
     </ul>
   );
 }
