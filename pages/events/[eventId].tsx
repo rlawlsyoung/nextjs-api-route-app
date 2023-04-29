@@ -5,11 +5,7 @@ import EventLogistics from "@/components/eventDetail/EventLogistics";
 import EventContent from "@/components/eventDetail/EventContent";
 import Comments from "@/components/input/Comments";
 
-import {
-  getEventById,
-  getAllEvents,
-  getFeaturedEvents,
-} from "@/helpers/api-util";
+import { getEventById, getFeaturedEvents } from "@/helpers/api-util";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { EventType } from "@/helpers/api-util";
 

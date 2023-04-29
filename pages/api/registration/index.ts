@@ -1,22 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { MongoClient } from "mongodb";
 
-const connectDatabase = async () => {
-  const client = await MongoClient.connect(
-    "mongodb+srv://rlawlsyoung:1q2w3e4r@udemycluster.o9wuh6s.mongodb.net/?retryWrites=true&w=majority"
-  );
-
-  return client;
-};
-
-const insertDocument = async (
-  client: MongoClient,
-  document: { email: string }
-) => {
-  const db = client.db("events");
-
-  await db.collection("newsletter").insertOne(document);
-};
+import { connectDatabase, insertDocument } from "@/helpers/db-util";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "POST") {
@@ -37,7 +21,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
     try {
-      await insertDocument(client, { email: email });
+      await insertDocument(client, "newsletter", { email: email });
       client.close();
     } catch (err) {
       res.status(500).json({ message: "Inserting database failed." });
