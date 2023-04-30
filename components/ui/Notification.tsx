@@ -3,13 +3,13 @@ import { useContext } from "react";
 import classes from "./notification.module.css";
 // import NotificationContext from "../../store/notification-context";
 
-interface NotificationProps {
+export interface NotificationType {
   title: string;
   message: string;
   status: string;
 }
 
-const Notification: React.FC<NotificationProps> = ({
+const Notification: React.FC<NotificationType> = ({
   title,
   message,
   status,

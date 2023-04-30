@@ -1,6 +1,14 @@
-import { ReactNode, createContext } from "react";
+import { ReactNode, createContext, useState } from "react";
 
-const NotificationContext = createContext({
+import { NotificationType } from "@/components/ui/Notification";
+
+interface NotificationContextType {
+  notification: NotificationType | null | undefined;
+  showNotification: (notificationData: NotificationType) => void;
+  hideNotification: () => void;
+}
+
+const NotificationContext = createContext<NotificationContextType>({
   notification: null,
   showNotification: () => {},
   hideNotification: () => {},
@@ -13,8 +21,25 @@ interface ProviderProps {
 export const NotificationContextProvider: React.FC<ProviderProps> = ({
   children,
 }) => {
+  const [activeNotification, setActiveNotification] =
+    useState<NotificationType | null>();
+
+  const showNotificationHandler = (notificationData: NotificationType) => {
+    setActiveNotification(notificationData);
+  };
+
+  const hideNotificationHandler = () => {
+    setActiveNotification(null);
+  };
+
+  const context = {
+    notification: activeNotification,
+    showNotification: showNotificationHandler,
+    hideNotification: hideNotificationHandler,
+  };
+
   return (
-    <NotificationContext.Provider value={}>
+    <NotificationContext.Provider value={context}>
       {children}
     </NotificationContext.Provider>
   );
