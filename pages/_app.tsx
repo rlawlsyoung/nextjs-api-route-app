@@ -1,7 +1,6 @@
 import Head from "next/head";
 
 import Layout from "@/components/layout/Layout";
-import Notification from "@/components/ui/Notification";
 import { NotificationContextProvider } from "@/store/NotificationContext";
 
 import type { AppProps } from "next/app";
@@ -21,11 +20,6 @@ export default function App({ Component, pageProps }: AppProps) {
             <title>Next Events</title>
           </Head>
           <Component {...pageProps} />
-          <Notification
-            title="Test"
-            message="This is a test."
-            status="pending"
-          />
         </>
       </Layout>
     </NotificationContextProvider>
