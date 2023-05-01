@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
-import classes from "./newComment.module.css";
 
 import { CommentType } from "./Comments";
+import classes from "./newComment.module.css";
 
 interface NewCommentProps {
   onAddComment: (commentData: CommentType) => void;
