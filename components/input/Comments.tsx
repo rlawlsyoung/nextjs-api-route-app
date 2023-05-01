@@ -18,6 +18,7 @@ interface CommentsProps {
 
 function Comments({ eventId }: CommentsProps) {
   const [showComments, setShowComments] = useState(false);
+  const [isCommentsLoaded, setIsCommentsLoaded] = useState(false);
   const [comments, setComments] = useState<CommentType[]>([]);
   const notificationCtx = useContext(NotificationContext);
 
@@ -30,7 +31,10 @@ function Comments({ eventId }: CommentsProps) {
         },
       })
         .then((res) => res.json())
-        .then((data) => setComments(data.comments));
+        .then((data) => {
+          setComments(data.comments);
+          setIsCommentsLoaded(true);
+        });
     }
   }, [showComments]);
 
@@ -82,8 +86,16 @@ function Comments({ eventId }: CommentsProps) {
       <button onClick={toggleCommentsHandler}>
         {showComments ? "Hide" : "Show"} Comments
       </button>
-      {showComments && <NewComment onAddComment={addCommentHandler} />}
-      {showComments && <CommentList items={comments} />}
+      {showComments && (
+        <>
+          <NewComment onAddComment={addCommentHandler} />
+          {isCommentsLoaded ? (
+            <CommentList items={comments} />
+          ) : (
+            <p>Loading...</p>
+          )}
+        </>
+      )}
     </section>
   );
 }
